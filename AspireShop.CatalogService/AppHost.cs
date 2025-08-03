@@ -1,5 +1,6 @@
 ﻿using AspireShop.CatalogDb;
 using AspireShop.CatalogService;
+using AspireShop.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 

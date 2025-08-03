@@ -1,5 +1,6 @@
 ﻿using AspireShop.BasketService;
 using AspireShop.BasketService.Repositories;
+using AspireShop.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
