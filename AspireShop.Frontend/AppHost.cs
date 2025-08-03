@@ -2,6 +2,7 @@
 using AspireShop.Frontend.Components;
 using AspireShop.Frontend.Services;
 using AspireShop.GrpcBasket;
+using AspireShop.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
