@@ -1,26 +1,65 @@
-﻿@inject BasketServiceClient BasketClient
+﻿@rendermode InteractiveServer
+@inject BasketServiceClient BasketClient
 @inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
 
-<EditForm Model="this" FormName="@($"addtocart-{Item.Id}")" OnSubmit="HandleAddToCart" data-enhance>
-    <input type="hidden" name="itemid" value="@Item.Id" />
-    <button type="submit" class="align-content-end cart-button" title=@($"Add {@Item.Name} to cart?")>
-        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-    </button>
-</EditForm>
+<button type="button" class="btn btn-primary btn-sm w-100"
+				title="Add @Item.Name to cart"
+				disabled="@isAdding"
+				@onclick="HandleAddToCart">
+	@if (isAdding)
+	{
+		<div class="spinner-border spinner-border-sm me-1" role="status">
+			<span class="visually-hidden">Adding...</span>
+		</div>
+		<span class="d-none d-sm-inline">Adding...</span>
+	}
+	else
+	{
+		<i class="fa fa-cart-plus me-1"></i>
+		<span class="d-none d-sm-inline">Add to Cart</span>
+	}
+</button>
 
 @code {
-    [Parameter]
-    [EditorRequired]
-    public required CatalogItem Item { get; set; }
+	private bool isAdding = false;
 
-    [SupplyParameterFromForm]
-    public int ItemId { get; set; }
+	[Parameter]
+	[EditorRequired]
+	public required CatalogItem Item { get; set; }
 
-    private async Task HandleAddToCart()
-    {
-        await BasketClient.AddToCartAsync("user", ItemId);
+	private async Task HandleAddToCart()
+	{
+		if (isAdding)
+			return; // Prevent double-clicks
 
-        // Preserve query string
-        Navigation.NavigateTo($"/{new Uri(Navigation.Uri).Query}");
-    }
+		isAdding = true;
+		StateHasChanged();
+
+		try
+		{
+			// Log the product ID for debugging
+			await JSRuntime.InvokeVoidAsync("console.log", $"Adding product to cart - ID: {Item.Id}, Name: {Item.Name}");
+
+			// Use Item.Id directly - no form submission needed
+			await BasketClient.AddToCartAsync("user", Item.Id);
+
+			await JSRuntime.InvokeVoidAsync("console.log", $"Successfully added product {Item.Id} to cart");
+
+			// Preserve query string and navigate
+			var currentUri = new Uri(Navigation.Uri);
+			var queryString = currentUri.Query;
+			Navigation.NavigateTo($"/{queryString}");
+		}
+		catch (Exception ex)
+		{
+			await JSRuntime.InvokeVoidAsync("console.error", $"Error adding item to cart: {ex.Message}");
+			Console.WriteLine($"Error adding item to cart: {ex.Message}");
+		}
+		finally
+		{
+			isAdding = false;
+			StateHasChanged();
+		}
+	}
 }

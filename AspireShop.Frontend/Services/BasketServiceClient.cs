@@ -1,4 +1,4 @@
-using Grpc.Core;
+﻿using Grpc.Core;
 using Polly.Timeout;
 using AspireShop.GrpcBasket;
 using AspireShop.BasketService.Models;
@@ -27,8 +27,13 @@ public class BasketServiceClient(Basket.BasketClient client)
 
     public async Task<CustomerBasket> AddToCartAsync(string buyerId, int productId)
     {
+        Console.WriteLine($"BasketServiceClient.AddToCartAsync called with buyerId: {buyerId}, productId: {productId}");
+        
         var (basket, _) = await GetBasketAsync(buyerId);
         basket ??= new CustomerBasket(buyerId);
+        
+        Console.WriteLine($"Current basket has {basket.Items.Count} items");
+        
         var found = false;
         foreach (var item in basket.Items)
         {
@@ -36,22 +41,28 @@ public class BasketServiceClient(Basket.BasketClient client)
             {
                 ++item.Quantity;
                 found = true;
+                Console.WriteLine($"Updated existing item {productId} quantity to {item.Quantity}");
                 break;
             }
         }
 
         if (!found)
         {
-            basket.Items.Add(new BasketItem
+            var newItem = new BasketItem
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Quantity = 1,
                 ProductId = productId
-            });
+            };
+            basket.Items.Add(newItem);
+            Console.WriteLine($"Added new item {productId} to basket with ID {newItem.Id}");
         }
 
         var response = await client.UpdateBasketAsync(MapToCustomerBasketRequest(basket));
         var result = MapToCustomerBasket(response);
+        
+        Console.WriteLine($"Basket updated successfully. Total items: {result.TotalItemCount}");
+        
         return result;
     }
 
@@ -62,7 +73,9 @@ public class BasketServiceClient(Basket.BasketClient client)
 
     public async Task DeleteBasketAsync(string buyerId)
     {
+        Console.WriteLine($"BasketServiceClient.DeleteBasketAsync called with buyerId: {buyerId}");
         _ = await client.DeleteBasketAsync(new DeleteCustomerBasketRequest { BuyerId = buyerId });
+        Console.WriteLine($"Delete basket request sent for buyerId: {buyerId}");
     }
 
     private static CustomerBasketRequest MapToCustomerBasketRequest(CustomerBasket customerBasket)

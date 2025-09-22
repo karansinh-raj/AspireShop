@@ -9,20 +9,20 @@
 
 @if (showRequestId)
 {
-    <p>
-        <strong>Request ID:</strong> <code>@requestId</code>
-    </p>
+	<p>
+		<strong>Request ID:</strong> <code>@requestId</code>
+	</p>
 }
 
 @code {
-    private string? requestId;
-    private bool showRequestId => !string.IsNullOrEmpty(requestId);
+	private string? requestId;
+	private bool showRequestId => !string.IsNullOrEmpty(requestId);
 
-    [CascadingParameter]
-    public HttpContext? HttpContext { get; set; }
+	[CascadingParameter]
+	public HttpContext? HttpContext { get; set; }
 
-    protected override void OnInitialized()
-    {
-        requestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
-    }
+	protected override void OnInitialized()
+	{
+		requestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+	}
 }
