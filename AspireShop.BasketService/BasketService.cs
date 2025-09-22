@@ -10,9 +10,6 @@ public class BasketService(IBasketRepository repository, ILogger<BasketService> 
 {
     public override async Task<CustomerBasketResponse> GetBasketById(BasketRequest request, ServerCallContext context)
     {
-        // Uncomment to force a delay for testing resiliency, etc.
-        //await Task.Delay(3000);
-
         var data = await repository.GetBasketAsync(request.Id);
 
         if (data is not null)

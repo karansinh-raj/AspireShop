@@ -1,4 +1,4 @@
-namespace AspireShop.GrpcBasket;
+﻿namespace AspireShop.GrpcBasket;
 
 public partial class DecimalValue
 {

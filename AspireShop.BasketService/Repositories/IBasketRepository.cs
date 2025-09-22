@@ -1,4 +1,4 @@
-using AspireShop.BasketService.Models;
+﻿using AspireShop.BasketService.Models;
 
 namespace AspireShop.BasketService.Repositories;
 

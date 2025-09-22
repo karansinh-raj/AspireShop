@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AspireShop.BasketService.Models;
 
@@ -16,7 +16,7 @@ public class BasketItem : IValidatableObject
 
         if (Quantity < 1)
         {
-            results = [ new("Invalid number of units", [ "Quantity" ]) ];
+            results = [new("Invalid number of units", ["Quantity"])];
         }
 
         return results ?? Enumerable.Empty<ValidationResult>();

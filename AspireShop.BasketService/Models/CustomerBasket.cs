@@ -1,10 +1,10 @@
-namespace AspireShop.BasketService.Models;
+﻿namespace AspireShop.BasketService.Models;
 
 public class CustomerBasket
 {
     public string? BuyerId { get; set; }
 
-    public List<BasketItem> Items { get; set; } = new();
+    public List<BasketItem> Items { get; set; } = [];
 
     public int TotalItemCount => Items.Sum(i => i.Quantity);
 
