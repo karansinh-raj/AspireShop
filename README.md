@@ -7,7 +7,7 @@
 
 This repository contains a comprehensive Proof-of-Concept (POC) demonstrating a modern microservices-based e-commerce platform built with **.NET 8** and **.NET Aspire**. It showcases cloud-native application development patterns, distributed service orchestration, observability, and resilience features in a real-world shopping scenario.
 
-![AspireShop Architecture Overview](./images/aspireshop-frontend-complete.png)
+<img width="1711" height="986" alt="Aspire Shop" src="https://github.com/user-attachments/assets/ea1144e0-f347-4f3f-bb14-75d9a49a769d" />
 
 ## 🎯 What is this POC about?
 
@@ -215,7 +215,33 @@ AspireShop/
 
 ### Step 4: Exploring the Aspire Dashboard
 
-![Aspire Dashboard Overview](./images/aspire-dashboard-overview.png)
+1. Aspire Resources - Table view
+   
+   <img width="1710" height="985" alt="Image" src="https://github.com/user-attachments/assets/31b927e3-6721-4a4b-aed7-f1ce44764458" />
+   
+2. Aspire Resources - Graph view
+   
+   <img width="1710" height="985" alt="Image" src="https://github.com/user-attachments/assets/9c30010d-c69e-48fe-9178-2a4ce2313593" />
+   
+3. Aspire Console Logs
+   
+   <img width="1710" height="985" alt="Image" src="https://github.com/user-attachments/assets/d786ad76-7230-490e-85ff-12fe29cc7980" />
+
+4. Aspire Structured Logs
+   
+   <img width="1710" height="985" alt="Image" src="https://github.com/user-attachments/assets/9576801a-ed08-4d6c-84d4-697dbca1bb53" />
+   
+5. Aspire Traces
+    
+   <img width="1710" height="985" alt="Image" src="https://github.com/user-attachments/assets/5aefd81c-f352-43f2-a3ec-f4c6898a6b49" />
+
+6. Aspire Trace Overview - Add Item to cart, and update cart page
+    
+   <img width="1710" height="985" alt="Image" src="https://github.com/user-attachments/assets/4a6fe54f-05da-4c08-b006-a7c5ef0accc4" />
+   
+7. Aspire Metrics
+    
+   <img width="1710" height="985" alt="Image" src="https://github.com/user-attachments/assets/d2835a44-83ac-4b38-baa9-f7ecce48dd85" />
 
 The Aspire Dashboard provides comprehensive monitoring:
 
@@ -344,23 +370,17 @@ builder.AddRedis("basketcache");
 
 ### 🛒 **Shopping Cart Flow**
 
-![Shopping Cart Flow](./images/shopping-cart-flow.png)
-
 ```
 User browses products → Adds to cart → gRPC call to BasketService → Redis storage → Real-time UI update
 ```
 
 ### 📦 **Catalog Service Flow**
 
-![Catalog Service Flow](./images/catalog-service-flow.png)
-
 ```
 Frontend requests → HTTP API → CatalogService → PostgreSQL query → JSON response → UI rendering
 ```
 
 ### 🔄 **Service Discovery Flow**
-
-![Service Discovery Flow](./images/service-discovery-flow.png)
 
 ```
 Service startup → Aspire registration → Service discovery → Automatic endpoint resolution → HTTP/gRPC communication
