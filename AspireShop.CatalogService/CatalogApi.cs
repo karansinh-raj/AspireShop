@@ -1,4 +1,5 @@
 ﻿using AspireShop.CatalogDb;
+using AspireShop.CatalogService.RequestResponseModels;
 
 namespace AspireShop.CatalogService;
 
@@ -10,17 +11,20 @@ public static class CatalogApi
         var group = routes.MapGroup("/api/v1/catalog");
 
         group.WithTags("Catalog");
-
+        
+        // Get all items with pagination
         group.MapGet("items/type/all", (CatalogDbContext catalogContext, int? before, int? after, int pageSize = 8)
             => GetCatalogItems(null, catalogContext, before, after, pageSize))
             .Produces(StatusCodes.Status400BadRequest)
             .Produces<CatalogItemsPage>();
 
+        // Get all items by brand
         group.MapGet("items/type/all/brand/{catalogBrandId:int}", (int catalogBrandId, CatalogDbContext catalogContext, int? before, int? after, int pageSize = 8)
             => GetCatalogItems(catalogBrandId, catalogContext, before, after, pageSize))
             .Produces(StatusCodes.Status400BadRequest)
             .Produces<CatalogItemsPage>();
 
+        // Get item image by id
         group.MapGet("items/{catalogItemId:int}/image", async (int catalogItemId, CatalogDbContext catalogDbContext, IHostEnvironment environment) =>
         {
             var item = await catalogDbContext.CatalogItems.FindAsync(catalogItemId);
@@ -68,5 +72,3 @@ public static class CatalogApi
             itemsOnPage.Take(pageSize)));
     }
 }
-
-public record CatalogItemsPage(int FirstId, int NextId, bool IsLastPage, IEnumerable<CatalogItem> Data);

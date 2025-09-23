@@ -8,6 +8,7 @@ namespace AspireShop.BasketService;
 public class BasketService(IBasketRepository repository, ILogger<BasketService> logger)
     : Basket.BasketBase
 {
+    // Get basket by id
     public override async Task<CustomerBasketResponse> GetBasketById(BasketRequest request, ServerCallContext context)
     {
         var data = await repository.GetBasketAsync(request.Id);
@@ -20,6 +21,7 @@ public class BasketService(IBasketRepository repository, ILogger<BasketService> 
         return new CustomerBasketResponse();
     }
 
+    // Update basket
     public override async Task<CustomerBasketResponse> UpdateBasket(CustomerBasketRequest request, ServerCallContext context)
     {
         var customerBasket = MapToCustomerBasket(request);
@@ -33,6 +35,7 @@ public class BasketService(IBasketRepository repository, ILogger<BasketService> 
         return MapToCustomerBasketResponse(response);
     }
 
+    // Checkout basket
     public override async Task<CheckoutCustomerBasketResponse> CheckoutBasket(CheckoutCustomerBasketRequest request, ServerCallContext context)
     {
         var buyerId = request.BuyerId;
@@ -59,6 +62,7 @@ public class BasketService(IBasketRepository repository, ILogger<BasketService> 
         return new();
     }
 
+    // Delete basket
     public override async Task<DeleteCustomerBasketResponse> DeleteBasket(DeleteCustomerBasketRequest request, ServerCallContext context)
     {
         await repository.DeleteBasketAsync(request.BuyerId);
